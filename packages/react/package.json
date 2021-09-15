@@ -1,0 +1,27 @@
+{
+  "name": "notadb-react",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "uznam8x <uznam8x@gmail.com>",
+  "homepage": "https://github.com/uznam8x/notadb#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uznam8x/notadb.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "build": "tsc -m esNext"
+  },
+  "bugs": {
+    "url": "https://github.com/uznam8x/notadb/issues"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  },
+  "dependencies": {
+    "notadb": "^0.0.2",
+    "react": "^17.0.2"
+  }
+}

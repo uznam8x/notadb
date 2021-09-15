@@ -1,0 +1,34 @@
+{
+  "name": "notadb",
+  "version": "0.0.2",
+  "description": "notadb react",
+  "keywords": [
+    "notadb"
+  ],
+  "author": "uznam8x <uznam8x@gmail.com>",
+  "homepage": "https://github.com/uznam8x/notadb#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uznam8x/notadb.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "bugs": {
+    "url": "https://github.com/uznam8x/notadb/issues"
+  },
+  "dependencies": {
+    "ramda": "^0.27.1",
+    "typescript": "^4.4.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.9.0",
+    "@types/ramda": "^0.27.44",
+    "jest": "^27.1.1",
+    "ts-jest": "^27.0.5"
+  }
+}
