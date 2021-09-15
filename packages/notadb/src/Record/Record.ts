@@ -1,5 +1,5 @@
 import { Metadata, Author, Media, Property } from "../types";
-// import * as R from "ramda";
+import * as R from "ramda";
 
 export default class Record {
   id: number = -1;
@@ -35,18 +35,21 @@ export default class Record {
   }
   prop(key?: string) {
     if (key) {
-      return this.properties[key].value;
+      return this.properties[key].value || undefined;
     }
-    return this.properties;
+    return Object.entries(this.properties).reduce(
+      (a, b) => ({ ...a, [b[0]]: b[1].value }),
+      {}
+    );
   }
   meta(key?: string) {
-    /* if (key) {
-      return R.pipe(
-        R.find((v: Metadata) => v.name === key),
-        R.prop("value")
-      )(this.metadata as any);
-    } */
-    console.log(key);
-    return this.metadata;
+    if (key) {
+      const res = R.find((v: Metadata) => v.name === key)(
+        this.metadata
+      ) as Metadata;
+      return R.prop("value", res);
+    }
+
+    return this.metadata.map(({ name, value }) => ({ name, value }));
   }
 }

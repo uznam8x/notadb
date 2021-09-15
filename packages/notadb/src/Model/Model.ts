@@ -3,8 +3,8 @@ import Record from "../Record";
 
 export default class Model {
   private record: Record[];
-  len: number;
-  constructor(record: Partial<Record>[]) {
+  private increase: number = 0;
+  constructor(record: Partial<Record>[] = []) {
     this.record = record.map(
       (v, i: number) =>
         new Record({
@@ -13,20 +13,35 @@ export default class Model {
           ...v,
         })
     );
-    this.len = record.length;
+    this.increase = record.length;
   }
 
-  insert({ id = this.len + 1, ...rest }: Record): Model {
+  findIndex(id: number): number {
+    return R.findIndex((v: Record) => v.id === id, this.record);
+  }
+
+  insert({ id = this.increase + 1, ...rest }: Partial<Record>): Model {
     const row = new Record({ id, ...rest } as Partial<Record>);
-    this.len++;
-    this.record.push(row);
+    const res = R.insert(-1, row, this.record);
+    this.record = res as Record[];
+    this.increase++;
+
     return this;
   }
 
   update(id: number, params: Partial<Record>): Model {
-    const index = R.findIndex((v: Record) => v.id === id)(this.record);
-    const item = R.nth(index)(this.record);
-    const res = R.update(index, { ...item, ...params })(this.record);
+    const item = this.find(id);
+    const res = R.update(
+      this.findIndex(id),
+      { ...item, ...params },
+      this.record
+    );
+    this.record = res as Record[];
+    return this;
+  }
+
+  destroy(id: number): Model {
+    const res = R.remove(this.findIndex(id), 1, this.record);
     this.record = res as Record[];
     return this;
   }
@@ -35,12 +50,12 @@ export default class Model {
     return R.find((v: Record) => v.id === id)(this.record) as Record;
   }
 
-  findAll(key: string, value: string | number): Record[] {
-    return R.filter((v: Record) => v[key] === value)(this.record);
-  }
-
   findBy(key: string, value: string | number): Record {
     return R.find((v: Record) => v[key] === value)(this.record) as any;
+  }
+
+  findAll(key: string, value: string | number): Record[] {
+    return R.filter((v: Record) => v[key] === value)(this.record);
   }
 
   all(): Record[] {
@@ -48,7 +63,7 @@ export default class Model {
   }
 
   truncate(): Model {
-    this.record = [];
+    this.record = [] as Record[];
     return this;
   }
 
@@ -58,6 +73,7 @@ export default class Model {
       [name]: { label, value },
     };
   }
+
   metadata(name: string, ...args: [any, string]) {
     const [value, label] = args;
     return {
@@ -65,5 +81,9 @@ export default class Model {
       name,
       value,
     };
+  }
+
+  length(): number {
+    return this.record.length;
   }
 }

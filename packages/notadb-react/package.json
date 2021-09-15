@@ -1,7 +1,7 @@
 {
   "name": "notadb-react",
-  "version": "0.0.1",
-  "description": "> TODO: description",
+  "version": "0.0.3",
+  "description": "Notadb for react",
   "author": "uznam8x <uznam8x@gmail.com>",
   "homepage": "https://github.com/uznam8x/notadb#readme",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "react": "^17.0.2"
   },
   "dependencies": {
-    "notadb": "^0.0.2",
+    "notadb": "^0.0.3",
     "react": "^17.0.2"
   }
 }
