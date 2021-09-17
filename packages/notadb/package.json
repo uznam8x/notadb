@@ -1,6 +1,6 @@
 {
   "name": "notadb",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "notadb react",
   "keywords": [
     "notadb"
@@ -21,6 +21,7 @@
     "url": "https://github.com/uznam8x/notadb/issues"
   },
   "dependencies": {
+    "events": "^3.3.0",
     "ramda": "^0.27.1",
     "typescript": "^4.4.2"
   },

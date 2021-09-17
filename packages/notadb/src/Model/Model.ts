@@ -1,10 +1,12 @@
 import * as R from "ramda";
+import EventEmitter from "events";
 import Record from "../Record";
 
-export default class Model {
+export default class Model extends EventEmitter {
   private record: Record[];
   private increase: number = 0;
   constructor(record: Partial<Record>[] = []) {
+    super();
     this.record = record.map(
       (v, i: number) =>
         new Record({
@@ -14,6 +16,13 @@ export default class Model {
         })
     );
     this.increase = record.length;
+
+    setTimeout(() => {
+      this.trigger("created", {});
+    }, 1);
+  }
+  trigger(channel: string, args: any) {
+    this.emit(channel, { ...args, target: this });
   }
 
   findIndex(id: number): number {
@@ -26,23 +35,37 @@ export default class Model {
     this.record = res as Record[];
     this.increase++;
 
+    this.trigger("inserted", { record: row });
+    this.trigger("changed", { type: "inserted", record: row });
     return this;
   }
 
   update(id: number, params: Partial<Record>): Model {
     const item = this.find(id);
-    const res = R.update(
-      this.findIndex(id),
-      { ...item, ...params },
-      this.record
-    );
+    const row = { ...item, ...params };
+    const res = R.update(this.findIndex(id), row, this.record);
     this.record = res as Record[];
+
+    this.trigger("updated", { record: row });
+    this.trigger("changed", { type: "updated", record: row });
     return this;
   }
 
   destroy(id: number): Model {
+    const row = this.find(id);
     const res = R.remove(this.findIndex(id), 1, this.record);
     this.record = res as Record[];
+
+    this.trigger("destroyed", { record: row });
+    this.trigger("changed", { type: "destroyed", record: row });
+    return this;
+  }
+
+  truncate(): Model {
+    this.record = [] as Record[];
+
+    this.trigger("truncated", {});
+    this.trigger("changed", { type: "truncated" });
     return this;
   }
 
@@ -51,7 +74,7 @@ export default class Model {
   }
 
   findBy(key: string, value: string | number): Record {
-    return R.find((v: Record) => v[key] === value)(this.record) as any;
+    return R.find((v: Record) => v[key] === value)(this.record) as Record;
   }
 
   findAll(key: string, value: string | number): Record[] {
@@ -62,28 +85,24 @@ export default class Model {
     return this.record;
   }
 
-  truncate(): Model {
-    this.record = [] as Record[];
-    return this;
-  }
-
-  property(name: string, ...args: [any, string]) {
-    const [value, label] = args;
-    return {
-      [name]: { label, value },
-    };
-  }
-
-  metadata(name: string, ...args: [any, string]) {
-    const [value, label] = args;
-    return {
-      label,
-      name,
-      value,
-    };
-  }
-
-  length(): number {
+  get length(): number {
     return this.record.length;
+  }
+
+  orderBy(key: string, direction: "desc" | "asc" = "asc"): Record[] {
+    const res = R.sort(
+      (a, b) => (direction === "asc" ? a[key] - b[key] : b[key] - a[key]),
+      this.record
+    ) as Record[];
+    this.record = res;
+    return this.record;
+  }
+
+  paginate(count: number, limit: number = Infinity): Record[] {
+    const offset = (count - 1) * limit;
+    return R.pipe(
+      R.slice(offset, Infinity),
+      R.take(limit)
+    )(this.record) as Record[];
   }
 }

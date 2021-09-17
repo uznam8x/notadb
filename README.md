@@ -231,3 +231,17 @@ const res = posts.find(1);
 res.meta();
 // => [ { name: "like", value: 12 }, { name: "bookmark", value: 13 } ]
 ```
+
+## Events
+```typescript
+const posts = new Model([
+    { id:2 }
+]);
+
+posts.on("created", () => {});      // { target: Model }
+posts.on("inserted", () => {});     // { record: Object, target: Model }
+posts.on("updated", () => {});      // { record: Object, target: Model }
+posts.on("destroyed", () => {});    // { record: Object, target: Model }
+posts.on("truncated", () => {});    // { }
+posts.on("changed", () => {});      // { type: string, target: Model }
+```

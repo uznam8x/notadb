@@ -21,3 +21,11 @@ export type Metadata = {
   name: string;
   value: any;
 };
+
+export type Channel =
+  | "changed"
+  | "created"
+  | "updated"
+  | "inserted"
+  | "destroyed"
+  | "truncated";

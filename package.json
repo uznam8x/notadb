@@ -1,6 +1,11 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "notadb": "yarn workspace notadb",
+    "react": "yarn workspace notadb-react",
+    "build": "yarn notadb build && yarn react build"
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
   },

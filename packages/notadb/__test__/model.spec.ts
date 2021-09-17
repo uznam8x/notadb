@@ -1,10 +1,10 @@
 import { Model } from "../src/index";
-
+import * as R from "ramda";
 describe("Model", () => {
   test("Insert", () => {
     const posts = new Model();
     posts.insert({ id: 2 });
-    expect(posts.length()).toEqual(1);
+    expect(posts.length).toEqual(1);
   });
   test("Creadt and has properties", () => {
     const posts = new Model([{ id: 2 }]);
@@ -42,7 +42,7 @@ describe("Model", () => {
     const posts = new Model([{ id: 2 }]);
     const res = posts.destroy(2);
 
-    expect(res.length()).toEqual(0);
+    expect(res.length).toEqual(0);
   });
 
   test("Find by", () => {
@@ -75,6 +75,33 @@ describe("Model", () => {
     ]);
 
     posts.truncate();
-    expect(posts.length()).toEqual(0);
+    expect(posts.length).toEqual(0);
+  });
+
+  test("Order by", () => {
+    const posts = new Model([
+      { id: 2, subject: "a" },
+      { id: 3, subject: "b" },
+      { id: 4, subject: "c" },
+    ]);
+
+    expect(posts.orderBy("id").map((v) => v.id)).toEqual([2, 3, 4]);
+    expect(posts.orderBy("id", "desc").map((v) => v.id)).toEqual([4, 3, 2]);
+  });
+
+  test("Paginate", () => {
+    const posts = new Model(
+      Array(100)
+        .fill(0)
+        .map((v, index) => ({
+          id: v + index + 1,
+          subject: Number(index).toString(16),
+        }))
+    );
+
+    expect(posts.paginate(1, 10).map((v) => v.id)).toEqual(R.range(1, 11));
+    expect(posts.paginate(2, 10).map((v) => v.id)).toEqual(R.range(11, 21));
   });
 });
+
+
