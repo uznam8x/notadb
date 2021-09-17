@@ -1,6 +1,6 @@
 {
   "name": "notadb",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "notadb react",
   "keywords": [
     "notadb"
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc -m esNext"
+    "build": "tsc -m esNext && cp ./README.md ../../"
   },
   "bugs": {
     "url": "https://github.com/uznam8x/notadb/issues"

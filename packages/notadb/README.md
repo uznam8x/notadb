@@ -245,3 +245,6 @@ posts.on("destroyed", () => {});    // { record: Object, target: Model }
 posts.on("truncated", () => {});    // { }
 posts.on("changed", () => {});      // { type: string, target: Model }
 ```
+
+## Notadb for react
+https://www.npmjs.com/package/notadb-react
