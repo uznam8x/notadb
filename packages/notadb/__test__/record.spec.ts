@@ -1,7 +1,7 @@
 import { Model } from "../src/index";
 
 describe("Record", () => {
-  test("Property", () => {
+  test("Get Property", () => {
     const posts = new Model([
       {
         id: 1,
@@ -12,6 +12,20 @@ describe("Record", () => {
 
     const res = posts.find(1);
     const like = res.prop("like");
+    expect(like).toEqual(11);
+  });
+
+  test("Set Property", () => {
+    const posts = new Model([
+      {
+        id: 1,
+        subject: "title",
+        properties: { like: { label: "like", value: 1 } },
+      },
+    ]);
+
+    const res = posts.find(1);
+    const like = res.prop("like", 11);
     expect(like).toEqual(11);
   });
 
@@ -32,7 +46,7 @@ describe("Record", () => {
     expect(props).toMatchObject({ like: 11, bookmark: 12 });
   });
 
-  test("Metadata", () => {
+  test("Get Metadata", () => {
     const posts = new Model([
       {
         id: 1,
@@ -45,6 +59,21 @@ describe("Record", () => {
     const like = res.meta("like");
     expect(like).toEqual(12);
   });
+
+  test("Set Metadata", () => {
+    const posts = new Model([
+      {
+        id: 1,
+        subject: "title",
+        metadata: [{ label: "like", name: "like", value: 1 }],
+      },
+    ]);
+
+    const res = posts.find(1);
+    const like = res.meta("like", 12);
+    expect(like).toEqual(12);
+  });
+  
   test("All metadata", () => {
     const posts = new Model([
       {

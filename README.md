@@ -159,8 +159,7 @@ posts.findAll("subject", "b");
 ```
 
 ## Record
-### Property
-If you insert a key, it returns the value of the property.
+### Get Property
 ```typescript
 const posts = new Model([
     {
@@ -172,6 +171,21 @@ const posts = new Model([
 
 const res = posts.find(1);
 res.prop('like');
+// => 11
+```
+
+### Set Property
+```typescript
+const posts = new Model([
+    {
+        id: 1,
+        subject: "title",
+        properties: { like: { label: "like", value: 1 } },
+    },
+]);
+
+const res = posts.find(1);
+res.prop('like', 11);
 // => 11
 ```
 ### All property
@@ -193,8 +207,7 @@ const props = res.prop();
 // => { like: 11, bookmark: 12 }
 ```
 
-### Metadata
-If you insert a key, it returns the value of the metadata.
+### Get Metadata
 ```typescript
 const posts = new Model([
     {
@@ -211,6 +224,22 @@ res.meta("like");
 // => 12
 ```
 
+### Set Metadata
+```typescript
+const posts = new Model([
+    {
+        id: 1,
+        subject: "title",
+        metadata: [
+            { label: "like", name: "like", value: 1 }
+        ],
+    },
+]);
+
+const res = posts.find(1);
+res.meta("like", 12);
+// => 12
+```
 
 ### All metadata
 If you don't put in the key, everything will be returned.

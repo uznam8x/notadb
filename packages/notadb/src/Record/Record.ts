@@ -33,7 +33,11 @@ export default class Record {
     if (!row.updatedAt) this.updatedAt = new Date();
     return this;
   }
-  prop(key?: string) {
+  prop(key?: string, value?: any) {
+    if (key && value) {
+      this.properties[key].value = value;
+      return this.properties[key].value;
+    }
     if (key) {
       return this.properties[key].value || undefined;
     }
@@ -42,7 +46,18 @@ export default class Record {
       {}
     );
   }
-  meta(key?: string) {
+  meta(key?: string, value?: any) {
+    let res: any = {};
+
+    if (key) {
+      res = R.find((v: Metadata) => v.name === key)(this.metadata) as Metadata;
+    }
+    
+    if (key && value) {
+      res.value = value;
+      return R.prop("value", res);
+    }
+
     if (key) {
       const res = R.find((v: Metadata) => v.name === key)(
         this.metadata
