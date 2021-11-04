@@ -17,7 +17,7 @@ export default class Record {
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
 
-  constructor(row: Partial<Record>) {
+  constructor(row: Partial<Record & { [key: string]: any }>) {
     Object.entries(row).forEach((column) => {
       const [key, value] = column;
       this[key] = value;
@@ -52,7 +52,7 @@ export default class Record {
     if (key) {
       res = R.find((v: Metadata) => v.name === key)(this.metadata) as Metadata;
     }
-    
+
     if (key && value) {
       res.value = value;
       return R.prop("value", res);
@@ -66,5 +66,28 @@ export default class Record {
     }
 
     return this.metadata.map(({ name, value }) => ({ name, value }));
+  }
+  enum(entries: Metadata[] | Property) {
+    if (typeof entries === "object") {
+      if (Array.isArray(entries)) {
+        return entries.reduce(
+          (a: { [key: string]: any }, b: Metadata) => ({
+            ...a,
+            [b.name]: b.value,
+          }),
+          {}
+        );
+      } else {
+        return Object.entries(entries).reduce(
+          (a: { [key: string]: any }, b: any) => {
+            const [key, data] = b;
+            return { ...a, [key]: data.value };
+          },
+          {}
+        );
+      }
+    }
+
+    return [];
   }
 }

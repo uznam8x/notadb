@@ -1,4 +1,4 @@
-import { Model } from "../src/index";
+import { Record, Model, Metadata, Property } from "../src/index";
 
 describe("Record", () => {
   test("Get Property", () => {
@@ -73,7 +73,7 @@ describe("Record", () => {
     const like = res.meta("like", 12);
     expect(like).toEqual(12);
   });
-  
+
   test("All metadata", () => {
     const posts = new Model([
       {
@@ -92,5 +92,26 @@ describe("Record", () => {
       { name: "like", value: 12 },
       { name: "bookmark", value: 13 },
     ]);
+  });
+
+  test("Enumeration", () => {
+    const record = new Record({
+      id: 1,
+      subject: "title",
+      array: [
+        { label: "temp", name: "a", value: 1 },
+        { label: "temp", name: "b", value: 2 },
+      ],
+      object: {
+        a: { label: "temp", value: 1 },
+        b: { label: "temp", value: 2 },
+      },
+    }) as Record & { array: Metadata[]; object: Property };
+
+    const metas = record.enum(record.array);
+    const props = record.enum(record.object);
+
+    expect(metas).toEqual({ a: 1, b: 2 });
+    expect(props).toEqual({ a: 1, b: 2 });
   });
 });

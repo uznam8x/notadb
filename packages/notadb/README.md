@@ -261,6 +261,33 @@ res.meta();
 // => [ { name: "like", value: 12 }, { name: "bookmark", value: 13 } ]
 ```
 
+## Enumeration
+You can enumeration `Metadata[]` or `Property` format  
+```typescript
+const record = new Record({
+    id: 1,
+    subject: "title",
+    // like Metadata[]
+    array: [
+        { label: "temp", name: "a", value: 1 },
+        { label: "temp", name: "b", value: 2 },
+    ],
+
+    // like Property
+    object: {
+        a: { label: "temp", value: 1 },
+        b: { label: "temp", value: 2 },
+    },
+}) as Record & { array: Metadata[]; object: Property };
+
+const metas = record.enum(record.array);
+// => { a: 1, b: 2}
+
+const props = record.enum(record.object);
+// => { a: 1, b: 2}
+```
+
+
 ## Events
 ```typescript
 const posts = new Model([
