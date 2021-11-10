@@ -102,6 +102,44 @@ describe("Model", () => {
     expect(posts.paginate(1, 10).map((v) => v.id)).toEqual(R.range(1, 11));
     expect(posts.paginate(2, 10).map((v) => v.id)).toEqual(R.range(11, 21));
   });
+
+  test("Head", () => {
+  const posts = new Model(
+    Array(10)
+      .fill(0)
+      .map((v, index) => ({
+        id: v + index + 1,
+        subject: Number(index).toString(16),
+      }))
+  );
+
+  expect(posts.head()).toMatchObject({ id: 1 });
+  });
+
+  test("Last", () => {
+    const posts = new Model(
+      Array(10)
+        .fill(0)
+        .map((v, index) => ({
+          id: v + index + 1,
+          subject: Number(index).toString(16),
+        }))
+    );
+
+    expect(posts.last()).toMatchObject({ id: 10 });
+  });
+
+  test("Drop", () => {
+    const posts = new Model(
+      Array(10)
+        .fill(0)
+        .map((v, index) => ({
+          id: v + index + 1,
+          subject: Number(index).toString(16),
+        }))
+    );
+
+    posts.drop(1);
+    expect(posts.head()).toMatchObject({ id: 2 });
+  });
 });
-
-

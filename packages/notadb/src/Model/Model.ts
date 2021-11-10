@@ -85,6 +85,19 @@ export default class Model extends EventEmitter {
     return this.record;
   }
 
+  head(): Record {
+    return R.head(this.record) as Record;
+  }
+
+  last(): Record {
+    return R.last(this.record) as Record;
+  }
+
+  drop(count: number): Record[] {
+    this.record = R.drop(count, this.record);
+    return this.record;
+  }
+
   get length(): number {
     return this.record.length;
   }
