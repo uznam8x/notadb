@@ -6,13 +6,17 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        properties: { like: { label: "like", value: 11 } },
+        properties: {
+          like: { label: "like", value: 1 },
+          bookmark: { label: "bookmark", value: 0 },
+        },
       },
     ]);
 
     const res = posts.find(1);
-    const like = res.prop("like");
-    expect(like).toEqual(11);
+    expect(res.prop("like")).toEqual(1);
+    expect(res.prop("bookmark")).toEqual(0);
+    expect(res.prop("a")).toEqual(undefined);
   });
 
   test("Set Property", () => {
@@ -51,13 +55,17 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        metadata: [{ label: "like", name: "like", value: 12 }],
+        metadata: [
+          { label: "like", name: "like", value: 12 },
+          { label: "bookmark", name: "bookmark", value: 0 },
+        ],
       },
     ]);
 
     const res = posts.find(1);
-    const like = res.meta("like");
-    expect(like).toEqual(12);
+    expect(res.meta("like")).toEqual(12);
+    expect(res.meta("bookmark")).toEqual(0);
+    expect(res.prop("a")).toEqual(undefined);
   });
 
   test("Set Metadata", () => {

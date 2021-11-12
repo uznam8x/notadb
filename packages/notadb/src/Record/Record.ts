@@ -34,12 +34,14 @@ export default class Record {
     return this;
   }
   prop(key?: string, value?: any) {
-    if (key && value) {
+    if (key && !R.isNil(value)) {
       this.properties[key].value = value;
       return this.properties[key].value;
     }
     if (key) {
-      return this.properties[key].value || undefined;
+      return R.has(key)(this.properties)
+        ? this.properties[key].value
+        : undefined;
     }
     return Object.entries(this.properties).reduce(
       (a, b) => ({ ...a, [b[0]]: b[1].value }),
@@ -53,7 +55,7 @@ export default class Record {
       res = R.find((v: Metadata) => v.name === key)(this.metadata) as Metadata;
     }
 
-    if (key && value) {
+    if (key && !R.isNil(value)) {
       res.value = value;
       return R.prop("value", res);
     }
