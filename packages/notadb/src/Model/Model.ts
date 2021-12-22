@@ -11,7 +11,6 @@ export default class Model extends EventEmitter {
       (v, i: number) =>
         new Record({
           id: i + 1,
-          key: Math.random().toString(36).substr(2, 11),
           ...v,
         })
     );

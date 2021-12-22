@@ -18,6 +18,7 @@ export default class Record {
   updatedAt: Date = new Date();
 
   constructor(row: Partial<Record & { [key: string]: any }>) {
+    this.key = Math.random().toString(36).substring(2, 11);
     Object.entries(row).forEach((column) => {
       const [key, value] = column;
       this[key] = value;
