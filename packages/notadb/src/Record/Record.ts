@@ -1,5 +1,5 @@
 import { Metadata, Author, Media, Property } from "../types";
-import * as R from "ramda";
+import * as R from "../libs/ramda";
 
 export default class Record {
   id: number = -1;
@@ -16,6 +16,7 @@ export default class Record {
   relations: Record[] = [];
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
+  [key: string]: any;
 
   constructor(row: Partial<Record & { [key: string]: any }>) {
     this.key = Math.random().toString(36).substring(2, 11);

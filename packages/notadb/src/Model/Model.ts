@@ -1,10 +1,9 @@
-import * as R from "ramda";
+import * as R from "../libs/ramda";
 import EventEmitter from "events";
 import Record from "../Record";
 
 export default class Model extends EventEmitter {
   private record: Record[];
-  private increase: number = 0;
   constructor(record: Partial<Record>[] = []) {
     super();
     this.record = record.map(
@@ -14,7 +13,6 @@ export default class Model extends EventEmitter {
           ...v,
         })
     );
-    this.increase = record.length;
 
     setTimeout(() => {
       this.trigger("created", {});
@@ -28,11 +26,10 @@ export default class Model extends EventEmitter {
     return R.findIndex((v: Record) => v.id === id, this.record);
   }
 
-  insert({ id = this.increase + 1, ...rest }: Partial<Record>): Model {
+  insert({ id = this.length + 1, ...rest }: Partial<Record>): Model {
     const row = new Record({ id, ...rest } as Partial<Record>);
     const res = R.insert(-1, row, this.record);
     this.record = res as Record[];
-    this.increase++;
 
     this.trigger("inserted", { record: row });
     this.trigger("changed", { type: "inserted", record: row });

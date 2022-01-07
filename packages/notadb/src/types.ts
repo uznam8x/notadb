@@ -1,6 +1,7 @@
 export type Author = {
   id: number;
   name: string;
+  avatar: string;
 };
 
 export type Media = {
