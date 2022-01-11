@@ -1,4 +1,4 @@
-import { Record, Model, Metadata, Property } from "../src/index";
+import { Record, Model, Metadata, Property, Facade } from "../src/index";
 
 describe("Record", () => {
   test("Get Property", () => {
@@ -6,10 +6,10 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        properties: {
-          like: { label: "like", value: 1 },
-          bookmark: { label: "bookmark", value: 0 },
-        },
+        properties: Object.assign.apply(Object, [
+          Facade.prop("like", "like", 1),
+          Facade.prop("bookmark", "bookmark", 0),
+        ]),
       },
     ]);
 
@@ -24,7 +24,7 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        properties: { like: { label: "like", value: 1 } },
+        properties: Facade.prop("like", "like", 1),
       },
     ]);
 
@@ -38,10 +38,10 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        properties: {
-          like: { label: "like", value: 11 },
-          bookmark: { label: "bookmark", value: 12 },
-        },
+        properties: Object.assign(
+          Facade.prop("like", "like", 11),
+          Facade.prop("bookmark", "bookmark", 12)
+        ),
       },
     ]);
 
@@ -56,8 +56,8 @@ describe("Record", () => {
         id: 1,
         subject: "title",
         metadata: [
-          { label: "like", name: "like", value: 12 },
-          { label: "bookmark", name: "bookmark", value: 0 },
+          Facade.meta("like", "like", 12),
+          Facade.meta("bookmark", "bookmark", 0),
         ],
       },
     ]);
@@ -73,7 +73,7 @@ describe("Record", () => {
       {
         id: 1,
         subject: "title",
-        metadata: [{ label: "like", name: "like", value: 1 }],
+        metadata: [Facade.meta("like", "like", 1)],
       },
     ]);
 
@@ -88,8 +88,8 @@ describe("Record", () => {
         id: 1,
         subject: "title",
         metadata: [
-          { label: "like", name: "like", value: 12 },
-          { label: "bookmark", name: "bookmark", value: 13 },
+          Facade.meta("like", "like", 12),
+          Facade.meta("bookmark", "bookmark", 13),
         ],
       },
     ]);

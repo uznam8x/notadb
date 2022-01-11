@@ -19,4 +19,6 @@ export {
   is,
   prop,
   has,
+  zipObj,
+  curryN,
 } from "ramda";

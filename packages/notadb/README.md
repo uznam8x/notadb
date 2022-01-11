@@ -357,6 +357,39 @@ const metas = record.enum(record.array);
 
 const props = record.enum(record.object);
 // => { a: 1, b: 2}
+
+```
+
+## Facade
+```typescript
+
+Facade.author(1, 'b', 'http://www.domain.com');
+// => { id: 1, name: 'b', avatar: 'http://www.domain.com' }
+
+Facade.meta('a', 'b', 'c');
+// => { label: 'a', name: 'b', value: 'c' }
+
+Facade.prop('a', 'b', 'c');
+// => { 'a': { name: 'b', value: 'c' } }
+
+Facade.timestamps(new Date('2022-01-01'));
+// => { createdAt: Date, updatedAt: Date }
+```
+
+example
+```typescript
+  {
+    ...Facade.author(1, 'b', 'http://www.domain.com'),
+    properties: Object.assign.apply(Object, [
+        Facade.prop("like", "like", 1),
+        Facade.prop("bookmark", "bookmark", 0),
+    ]),
+    metadata: [
+      Facade.meta("like", "like", 1),
+      Facade.meta("bookmark", "bookmark", 0),
+    ],
+    ...Facade.timestamps(new Date('2022-01-01'))
+  }
 ```
 
 ## Events
@@ -372,6 +405,3 @@ posts.on("truncated", () => {}); // { }
 posts.on("changed", () => {}); // { type: string, target: Model }
 ```
 
-## Notadb for react
-
-https://www.npmjs.com/package/notadb-react
